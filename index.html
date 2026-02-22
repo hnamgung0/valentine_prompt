@@ -3,242 +3,238 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>💌 For You</title>
+  <title>Valentine.exe</title>
   <style>
-    :root{
-      --bg:#fff3f7;
-      --card:#ffffff;
-      --text:#1f1f1f;
-      --muted:#6b6b6b;
-      --accent:#ff4d88;
-      --accent2:#6c63ff;
-    }
-    *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background: radial-gradient(circle at top, #ffe0ec, var(--bg));
-      color:var(--text);
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
+      background:#c0c0c0;
+      font-family:"MS Sans Serif", Tahoma, Arial, sans-serif;
+      font-size:14px;
+      color:#000;
     }
-    .card{
-      width:min(720px, 100%);
-      background:var(--card);
-      border-radius:24px;
-      padding:24px;
-      box-shadow: 0 12px 40px rgba(0,0,0,.12);
-      position:relative;
-      overflow:hidden;
+    .window{
+      width:520px;
+      max-width:calc(100% - 24px);
+      margin:24px auto;
+      border:2px solid #000;
+      background:#c0c0c0;
+      box-shadow:2px 2px 0 #000;
     }
-    .hearts{
-      position:absolute;
-      inset:-30px;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255,77,136,.15), transparent 40%),
-        radial-gradient(circle at 80% 10%, rgba(108,99,255,.12), transparent 35%),
-        radial-gradient(circle at 70% 90%, rgba(255,77,136,.12), transparent 40%);
-      pointer-events:none;
-    }
-    .content{ position:relative; z-index:1; display:grid; gap:18px; }
-    h1{ margin:0; font-size:26px; }
-    p{ margin:0; color:var(--muted); line-height:1.5; }
-    .gifWrap{
-      border-radius:18px;
-      overflow:hidden;
-      border:1px solid rgba(0,0,0,.06);
-      background:#fff;
-    }
-    img{ width:100%; height:auto; display:block; }
-    .question{
-      font-size:20px;
-      font-weight:700;
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap:12px;
-    }
-    button.choice{
-      border:none;
-      cursor:pointer;
-      padding:18px 14px;
-      border-radius:16px;
-      background: linear-gradient(180deg, rgba(255,77,136,.12), rgba(255,77,136,.06));
-      outline:1px solid rgba(255,77,136,.25);
-      font-weight:700;
-      font-size:16px;
-      transition: transform .08s ease, box-shadow .2s ease;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:64px;
-      user-select:none;
-    }
-    button.choice:hover{
-      box-shadow:0 10px 22px rgba(255,77,136,.18);
-      transform: translateY(-1px);
-    }
-    button.choice.alt{
-      background: linear-gradient(180deg, rgba(108,99,255,.12), rgba(108,99,255,.06));
-      outline:1px solid rgba(108,99,255,.25);
-    }
-    .footer{
+    .titlebar{
+      background:#000080;
+      color:#fff;
+      padding:6px 8px;
+      font-weight:bold;
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-      padding-top:6px;
+      user-select:none;
     }
-    .pill{
-      font-size:13px;
-      color:var(--muted);
-      background: rgba(0,0,0,.04);
-      padding:8px 10px;
-      border-radius:999px;
+    .titlebar .buttons{ display:flex; gap:4px; }
+    .titlebar .winbtn{
+      width:16px; height:16px;
+      background:#c0c0c0;
+      border:1px solid #fff;
+      box-shadow: inset -1px -1px 0 #000;
     }
-    .hidden{ display:none !important; }
+    .content{ padding:10px; }
+    .panel{
+      background:#e0e0e0;
+      border:1px solid #fff;
+      box-shadow: inset -1px -1px 0 #000;
+      padding:10px;
+      margin-bottom:10px;
+    }
+    .gif{
+      width:100%;
+      max-height:240px;
+      object-fit:contain;
+      display:block;
+      background:#fff;
+      border:1px solid #000;
+      margin-bottom:10px;
+    }
+    .question{ font-weight:bold; margin:6px 0 10px; }
 
-    /* Simple confetti */
-    .confetti{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-start;
+      flex-wrap:wrap;
+    }
+
+    /* Windows-ish buttons */
+    button{
+      background:#c0c0c0;
+      border:2px solid #fff;
+      box-shadow: inset -2px -2px 0 #000;
+      cursor:pointer;
+      font-weight:bold;
+      padding:10px 14px;
+      min-width:110px;
+      user-select:none;
+    }
+    button:active{
+      border:2px solid #000;
+      box-shadow: inset 2px 2px 0 #fff;
+    }
+
+    /* YES button scaling */
+    #yesBtn{
+      transform-origin:left center;
+      transition: transform 140ms ease;
+    }
+
+    .statusbar{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      padding:6px 8px;
+      background:#c0c0c0;
+      border-top:1px solid #808080;
+    }
+    .statusbox{
+      flex:1;
+      background:#e0e0e0;
+      border:1px solid #fff;
+      box-shadow: inset -1px -1px 0 #000;
+      padding:4px 6px;
+      min-height:18px;
       overflow:hidden;
-      z-index:9999;
+      white-space:nowrap;
+      text-overflow:ellipsis;
     }
-    .confetti span{
-      position:absolute;
-      top:-10px;
-      width:10px;
-      height:16px;
-      opacity:.9;
-      border-radius:2px;
-      animation: fall 1.6s linear forwards;
-    }
-    @keyframes fall{
-      to{ transform: translateY(110vh) rotate(520deg); opacity:1; }
-    }
+
+    .hidden{ display:none; }
+    .hint{ font-size:12px; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="hearts"></div>
 
-    <div class="content" id="step1">
-      <h1>Hi love 💖</h1>
-      <p>I made you a tiny page because you’re my favorite human.</p>
-
-      <div class="gifWrap">
-        <!-- Replace this GIF URL with your own (Giphy direct gif URL works) -->
-        <img alt="Cute gif" src="https://www.reddit.com/r/animation/comments/ss1si4/little_gif_i_made_for_fun_3_happy_valentines_day/">
-      </div>
-
-      <div class="question">Will you be my Valentine? 🌹</div>
-
-      <div class="grid">
-        <button class="choice" onclick="answer('YES!!')">YES!! 💘</button>
-        <button class="choice alt" onclick="answer('Of course')">Of course 😌💞</button>
-        <button class="choice alt" onclick="answer('Always')">Always 🥹</button>
-        <button class="choice" onclick="answer('DUH')">DUH 🙄❤️</button>
-      </div>
-
-      <div class="footer">
-        <div class="pill">tap a square to answer</div>
-        <div class="pill" id="chosen"></div>
-      </div>
+<div class="window">
+  <div class="titlebar">
+    <div>Valentine.exe</div>
+    <div class="buttons">
+      <div class="winbtn" title="Minimize"></div>
+      <div class="winbtn" title="Maximize"></div>
+      <div class="winbtn" title="Close"></div>
     </div>
-
-    <div class="content hidden" id="step2">
-      <h1 id="title2">YAY!!! 🥳💞</h1>
-      <p id="msg2">Okay now one more important question…</p>
-
-      <div class="question">Pick our date vibe 🍽️✨</div>
-
-      <div class="grid">
-        <button class="choice" onclick="finalPick('K-BBQ + boba')">K-BBQ + boba 🥩🧋</button>
-        <button class="choice alt" onclick="finalPick('Sushi + dessert')">Sushi + dessert 🍣🍰</button>
-        <button class="choice alt" onclick="finalPick('Home dinner + movie')">Home dinner + movie 🍝🎬</button>
-        <button class="choice" onclick="finalPick('Surprise me')">Surprise me 😈🎁</button>
-      </div>
-
-      <div class="footer">
-        <div class="pill">you can only choose one 😎</div>
-        <div class="pill" id="pick2"></div>
-      </div>
-    </div>
-
-    <div class="content hidden" id="final">
-      <h1>It’s a date 💘</h1>
-      <p id="finalText">I can’t wait. Screenshot this and send it to me 😘</p>
-
-      <div class="gifWrap">
-        <img alt="Happy gif" src="https://media.giphy.com/media/l4FGpP4lxGGgK5CBW/giphy.gif">
-      </div>
-
-      <div class="footer">
-        <div class="pill" id="summary"></div>
-        <div class="pill">love you ♾️</div>
-      </div>
-    </div>
-
   </div>
 
-  <div class="confetti" id="confetti"></div>
+  <!-- STEP 1 -->
+  <div class="content" id="step1">
+    <div class="panel">
+      <div><b>System Message</b></div>
+      <div class="hint">Please respond to the prompt.</div>
+    </div>
 
-  <script>
-    let firstAnswer = "";
+    <div class="panel">
+      <img class="gif" alt="Cute gif"
+           src="https://preview.redd.it/tnxsot7m7qh81.gif?width=480&format=mp4&s=d977f2f25c391d0451a59d1cb9291346c3bc3751">
 
-    function answer(text){
-      firstAnswer = text;
-      document.getElementById("chosen").textContent = "You picked: " + text;
-      popConfetti();
-      setTimeout(() => {
-        document.getElementById("step1").classList.add("hidden");
-        document.getElementById("step2").classList.remove("hidden");
-        document.getElementById("title2").textContent = "YAY! 🥳 (" + text + ")";
-      }, 450);
-    }
+      <div class="question">Question 1: Will you be my Valentine?</div>
 
-    function finalPick(vibe){
-      document.getElementById("pick2").textContent = "Vibe: " + vibe;
-      popConfetti(24);
-      setTimeout(() => {
-        document.getElementById("step2").classList.add("hidden");
-        document.getElementById("final").classList.remove("hidden");
-        document.getElementById("summary").textContent =
-          "Valentine: " + firstAnswer + " • Date vibe: " + vibe;
-        document.getElementById("finalText").textContent =
-          "You chose: " + vibe + ". Screenshot this and send it to me 😘";
-      }, 450);
-    }
+      <div class="row">
+        <button id="yesBtn" onclick="onYes()">YES</button>
+        <button id="noBtn" onclick="onNo()">NO</button>
+      </div>
+    </div>
 
-    function popConfetti(amount=18){
-      const wrap = document.getElementById("confetti");
-      wrap.innerHTML = "";
-      const colors = ["#ff4d88","#6c63ff","#ffd166","#06d6a0","#f72585","#4cc9f0"];
-      for(let i=0;i<amount;i++){
-        const c = document.createElement("span");
-        const left = Math.random()*100;
-        const delay = Math.random()*0.25;
-        const size = 8 + Math.random()*10;
-        c.style.left = left + "vw";
-        c.style.animationDelay = delay + "s";
-        c.style.background = colors[Math.floor(Math.random()*colors.length)];
-        c.style.width = size + "px";
-        c.style.height = (size*1.4) + "px";
-        wrap.appendChild(c);
-      }
-      // auto clear after animation
-      setTimeout(() => wrap.innerHTML = "", 1800);
-    }
-  </script>
+    <div class="statusbar">
+      <div class="statusbox" id="status1">Status: awaiting response...</div>
+      <div class="statusbox" id="noCountBox">NO clicks: 0</div>
+    </div>
+  </div>
+
+  <!-- STEP 2 (placeholder) -->
+  <div class="content hidden" id="step2">
+    <div class="panel">
+      <div><b>SUCCESS</b></div>
+      <div class="hint">Proceed to next question.</div>
+    </div>
+
+    <div class="panel">
+      <div class="question">Question 2: Pick our date vibe</div>
+      <div class="row">
+        <button onclick="finalPick('Dinner')">DINNER</button>
+        <button onclick="finalPick('Dessert')">DESSERT</button>
+        <button onclick="finalPick('Movie')">MOVIE</button>
+      </div>
+    </div>
+
+    <div class="statusbar">
+      <div class="statusbox">Status: choose one...</div>
+      <div class="statusbox" id="pick2"></div>
+    </div>
+  </div>
+
+  <!-- FINAL -->
+  <div class="content hidden" id="final">
+    <div class="panel">
+      <div><b>DONE</b></div>
+      <div class="hint" id="finalText">Screenshot this and send it to me 😌</div>
+    </div>
+
+    <div class="panel">
+      <div><b>Summary</b></div>
+      <div class="hint" id="summary"></div>
+    </div>
+
+    <div class="statusbar">
+      <div class="statusbox">Status: complete ✅</div>
+      <div class="statusbox">Love you.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let noClicks = 0;
+
+  // Each NO makes YES bigger (progressively)
+  // You can tweak these scale steps if you want more/less dramatic growth.
+  const scales = [1.0, 1.25, 1.55, 1.9, 2.35, 2.9];
+
+  const noMessages = [
+    "Status: awaiting response...",
+    "Status: are you sure? 🙂",
+    "Status: incorrect selection detected.",
+    "Status: please choose YES.",
+    "Status: YES is the only supported option.",
+    "Status: system override imminent..."
+  ];
+
+  function onNo(){
+    noClicks++;
+
+    const yesBtn = document.getElementById("yesBtn");
+    const noCountBox = document.getElementById("noCountBox");
+    const status1 = document.getElementById("status1");
+
+    // pick a scale based on how many times NO was clicked
+    const idx = Math.min(noClicks, scales.length - 1);
+    yesBtn.style.transform = `scale(${scales[idx]})`;
+
+    noCountBox.textContent = `NO clicks: ${noClicks}`;
+    status1.textContent = noMessages[Math.min(noClicks, noMessages.length - 1)];
+  }
+
+  function onYes(){
+    // Go to next question immediately
+    document.getElementById("step1").classList.add("hidden");
+    document.getElementById("step2").classList.remove("hidden");
+  }
+
+  function finalPick(vibe){
+    document.getElementById("pick2").textContent = "Picked: " + vibe;
+
+    document.getElementById("step2").classList.add("hidden");
+    document.getElementById("final").classList.remove("hidden");
+
+    document.getElementById("summary").textContent =
+      `Q1: YES | Q2: ${vibe} | NO clicks before YES: ${noClicks}`;
+  }
+</script>
+
 </body>
 </html>
