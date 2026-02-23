@@ -72,7 +72,7 @@
       cursor:pointer;
       font-weight:bold;
       padding:10px 14px;
-      min-width:110px;
+      min-width:120px;
       user-select:none;
     }
     button:active{
@@ -130,8 +130,9 @@
     </div>
 
     <div class="panel">
+      <!-- Swap this GIF link if you want -->
       <img class="gif" alt="Cute gif"
-           src="https://tenor.com/bUVhn.gif">
+           src="https://media.giphy.com/media/3oz8xsaLjLVqVXr3tS/giphy.gif">
 
       <div class="question">Question 1: Will you be my Valentine?</div>
 
@@ -147,25 +148,34 @@
     </div>
   </div>
 
-  <!-- STEP 2 (placeholder) -->
+  <!-- STEP 2 -->
   <div class="content hidden" id="step2">
-    <div class="panel">
-      <div><b>SUCCESS</b></div>
-      <div class="hint">Proceed to next question.</div>
-    </div>
-
     <div class="panel">
       <div class="question">Question 2: Pick our date vibe</div>
       <div class="row">
-        <button onclick="finalPick('Dinner')">DINNER</button>
-        <button onclick="finalPick('Dessert')">DESSERT</button>
-        <button onclick="finalPick('Movie')">MOVIE</button>
+        <button onclick="chooseVibe('Bonfire')">BONFIRE</button>
+        <button onclick="chooseVibe('Dinner')">DINNER</button>
+        <button onclick="chooseVibe('Movie')">MOVIE</button>
       </div>
     </div>
 
     <div class="statusbar">
       <div class="statusbox">Status: choose one...</div>
       <div class="statusbox" id="pick2"></div>
+    </div>
+  </div>
+
+  <!-- STEP 3 (dynamic) -->
+  <div class="content hidden" id="step3">
+    <div class="panel">
+      <div class="question" id="question3Text"></div>
+      <div class="row" id="question3Options"></div>
+      <div class="hint" id="question3Hint"></div>
+    </div>
+
+    <div class="statusbar">
+      <div class="statusbox">Status: awaiting final selection...</div>
+      <div class="statusbox" id="pick3"></div>
     </div>
   </div>
 
@@ -190,9 +200,10 @@
 
 <script>
   let noClicks = 0;
+  let selectedVibe = "";
+  let q3Answer = "";
 
-  // Each NO makes YES bigger (progressively)
-  // You can tweak these scale steps if you want more/less dramatic growth.
+  // Each NO makes YES bigger (tweak these if you want)
   const scales = [1.0, 1.25, 1.55, 1.9, 2.35, 2.9];
 
   const noMessages = [
@@ -211,7 +222,6 @@
     const noCountBox = document.getElementById("noCountBox");
     const status1 = document.getElementById("status1");
 
-    // pick a scale based on how many times NO was clicked
     const idx = Math.min(noClicks, scales.length - 1);
     yesBtn.style.transform = `scale(${scales[idx]})`;
 
@@ -220,19 +230,79 @@
   }
 
   function onYes(){
-    // Go to next question immediately
+    // Move to Question 2
     document.getElementById("step1").classList.add("hidden");
     document.getElementById("step2").classList.remove("hidden");
   }
 
-  function finalPick(vibe){
+  function chooseVibe(vibe){
+    selectedVibe = vibe;
     document.getElementById("pick2").textContent = "Picked: " + vibe;
 
+    // Bonfire: no Q3 choices, go straight to final with message
+    if(vibe === "Bonfire"){
+      q3Answer = "I love you, see you there :)";
+      goFinal(true);
+      return;
+    }
+
+    // Dinner/Movie: go to Q3
     document.getElementById("step2").classList.add("hidden");
+    document.getElementById("step3").classList.remove("hidden");
+    loadQuestion3(vibe);
+  }
+
+  function loadQuestion3(vibe){
+    const questionText = document.getElementById("question3Text");
+    const optionsDiv  = document.getElementById("question3Options");
+    const hint        = document.getElementById("question3Hint");
+
+    optionsDiv.innerHTML = "";
+    hint.textContent = "";
+
+    if(vibe === "Dinner"){
+      questionText.textContent = "Question 3: Sushi, Steak, or Experience?";
+      addOption("Sushi");
+      addOption("Steak");
+      addOption("Experience");
+      return;
+    }
+
+    if(vibe === "Movie"){
+      questionText.textContent = "Question 3: At home or at the theater?";
+      addOption("At home");
+      addOption("At the theater");
+      return;
+    }
+  }
+
+  function addOption(label){
+    const btn = document.createElement("button");
+    btn.textContent = label;
+    btn.onclick = () => finishQ3(label);
+    document.getElementById("question3Options").appendChild(btn);
+  }
+
+  function finishQ3(answer){
+    q3Answer = answer;
+    document.getElementById("pick3").textContent = "Picked: " + answer;
+    goFinal(false);
+  }
+
+  function goFinal(fromBonfire){
+    // Hide step2/step3 safely
+    document.getElementById("step2").classList.add("hidden");
+    document.getElementById("step3").classList.add("hidden");
+
     document.getElementById("final").classList.remove("hidden");
 
+    // Final text: for Bonfire show the message; otherwise keep the normal line
+    document.getElementById("finalText").textContent = fromBonfire
+      ? q3Answer
+      : "Screenshot this and send it to me 😌";
+
     document.getElementById("summary").textContent =
-      `Q1: YES | Q2: ${vibe} | NO clicks before YES: ${noClicks}`;
+      `Q1: YES | Q2: ${selectedVibe} | Q3: ${q3Answer} | NO clicks before YES: ${noClicks}`;
   }
 </script>
 
