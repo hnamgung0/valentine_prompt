@@ -1,309 +1,279 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Valentine.exe</title>
-  <style>
-    body{
-      margin:0;
-      background:#c0c0c0;
-      font-family:"MS Sans Serif", Tahoma, Arial, sans-serif;
-      font-size:14px;
-      color:#000;
-    }
-    .window{
-      width:520px;
-      max-width:calc(100% - 24px);
-      margin:24px auto;
-      border:2px solid #000;
-      background:#c0c0c0;
-      box-shadow:2px 2px 0 #000;
-    }
-    .titlebar{
-      background:#000080;
-      color:#fff;
-      padding:6px 8px;
-      font-weight:bold;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      user-select:none;
-    }
-    .titlebar .buttons{ display:flex; gap:4px; }
-    .titlebar .winbtn{
-      width:16px; height:16px;
-      background:#c0c0c0;
-      border:1px solid #fff;
-      box-shadow: inset -1px -1px 0 #000;
-    }
-    .content{ padding:10px; }
-    .panel{
-      background:#e0e0e0;
-      border:1px solid #fff;
-      box-shadow: inset -1px -1px 0 #000;
-      padding:10px;
-      margin-bottom:10px;
-    }
-    .gif{
-      width:100%;
-      max-height:240px;
-      object-fit:contain;
-      display:block;
-      background:#fff;
-      border:1px solid #000;
-      margin-bottom:10px;
-    }
-    .question{ font-weight:bold; margin:6px 0 10px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine.exe</title>
 
-    .row{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:flex-start;
-      flex-wrap:wrap;
-    }
+<style>
+body{
+  margin:0;
+  background:#c0c0c0;
+  font-family:"MS Sans Serif", Tahoma, Arial, sans-serif;
+  font-size:14px;
+  color:#000;
+}
 
-    /* Windows-ish buttons */
-    button{
-      background:#c0c0c0;
-      border:2px solid #fff;
-      box-shadow: inset -2px -2px 0 #000;
-      cursor:pointer;
-      font-weight:bold;
-      padding:10px 14px;
-      min-width:120px;
-      user-select:none;
-    }
-    button:active{
-      border:2px solid #000;
-      box-shadow: inset 2px 2px 0 #fff;
-    }
+.window{
+  width:520px;
+  max-width:calc(100% - 24px);
+  margin:24px auto;
+  border:2px solid #000;
+  background:#c0c0c0;
+  box-shadow:2px 2px 0 #000;
+}
 
-    /* YES button scaling */
-    #yesBtn{
-      transform-origin:left center;
-      transition: transform 140ms ease;
-    }
+.titlebar{
+  background:#000080;
+  color:#fff;
+  padding:6px 8px;
+  font-weight:bold;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
-    .statusbar{
-      display:flex;
-      justify-content:space-between;
-      gap:8px;
-      padding:6px 8px;
-      background:#c0c0c0;
-      border-top:1px solid #808080;
-    }
-    .statusbox{
-      flex:1;
-      background:#e0e0e0;
-      border:1px solid #fff;
-      box-shadow: inset -1px -1px 0 #000;
-      padding:4px 6px;
-      min-height:18px;
-      overflow:hidden;
-      white-space:nowrap;
-      text-overflow:ellipsis;
-    }
+.titlebar .buttons{
+  display:flex;
+  gap:4px;
+}
 
-    .hidden{ display:none; }
-    .hint{ font-size:12px; }
-  </style>
+.winbtn{
+  width:16px;
+  height:16px;
+  background:#c0c0c0;
+  border:1px solid #fff;
+  box-shadow: inset -1px -1px 0 #000;
+}
+
+.content{ padding:10px; }
+
+.panel{
+  background:#e0e0e0;
+  border:1px solid #fff;
+  box-shadow: inset -1px -1px 0 #000;
+  padding:10px;
+  margin-bottom:10px;
+}
+
+.gif{
+  width:100%;
+  max-height:240px;
+  object-fit:contain;
+  display:block;
+  background:#fff;
+  border:1px solid #000;
+  margin-bottom:10px;
+}
+
+.question{
+  font-weight:bold;
+  margin:6px 0 10px;
+}
+
+.row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+button{
+  background:#c0c0c0;
+  border:2px solid #fff;
+  box-shadow: inset -2px -2px 0 #000;
+  cursor:pointer;
+  font-weight:bold;
+  padding:10px 14px;
+  min-width:120px;
+}
+
+button:active{
+  border:2px solid #000;
+  box-shadow: inset 2px 2px 0 #fff;
+}
+
+#yesBtn{
+  transform-origin:left center;
+  transition: transform 140ms ease;
+}
+
+.statusbar{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  padding:6px 8px;
+  border-top:1px solid #808080;
+}
+
+.statusbox{
+  flex:1;
+  background:#e0e0e0;
+  border:1px solid #fff;
+  box-shadow: inset -1px -1px 0 #000;
+  padding:4px 6px;
+  min-height:18px;
+}
+
+.hidden{ display:none; }
+.hint{ font-size:12px; }
+
+</style>
 </head>
 <body>
 
 <div class="window">
-  <div class="titlebar">
-    <div>Valentine.exe</div>
-    <div class="buttons">
-      <div class="winbtn" title="Minimize"></div>
-      <div class="winbtn" title="Maximize"></div>
-      <div class="winbtn" title="Close"></div>
+
+<div class="titlebar">
+  <div>Valentine.exe</div>
+  <div class="buttons">
+    <div class="winbtn"></div>
+    <div class="winbtn"></div>
+    <div class="winbtn"></div>
+  </div>
+</div>
+
+<!-- STEP 1 -->
+<div class="content" id="step1">
+  <div class="panel">
+    <div><b>System Message</b></div>
+    <div class="hint">Please respond to the prompt.</div>
+  </div>
+
+  <div class="panel">
+    <img class="gif" src="https://media.giphy.com/media/3oz8xsaLjLVqVXr3tS/giphy.gif">
+    <div class="question">Question 1: Will you be my Valentine?</div>
+    <div class="row">
+      <button id="yesBtn" onclick="onYes()">YES</button>
+      <button onclick="onNo()">NO</button>
     </div>
   </div>
 
-  <!-- STEP 1 -->
-  <div class="content" id="step1">
-    <div class="panel">
-      <div><b>System Message</b></div>
-      <div class="hint">Please respond to the prompt.</div>
-    </div>
-
-    <div class="panel">
-      <!-- Swap this GIF link if you want -->
-      <img class="gif" alt="Cute gif"
-           src="https://media.tenor.com/SqYXXNI-A4IAAAAi/happy-valentines.gif">
-
-      <div class="question">Question 1: Will you be my Valentine?</div>
-
-      <div class="row">
-        <button id="yesBtn" onclick="onYes()">YES</button>
-        <button id="noBtn" onclick="onNo()">NO</button>
-      </div>
-    </div>
-
-    <div class="statusbar">
-      <div class="statusbox" id="status1">Status: awaiting response...</div>
-      <div class="statusbox" id="noCountBox">NO clicks: 0</div>
-    </div>
+  <div class="statusbar">
+    <div class="statusbox" id="status1">Status: awaiting response...</div>
+    <div class="statusbox" id="noCountBox">NO clicks: 0</div>
   </div>
+</div>
 
-  <!-- STEP 2 -->
-  <div class="content hidden" id="step2">
-    <div class="panel">
-      <div class="question">Question 2: Pick our date vibe</div>
-      <div class="row">
-        <button onclick="chooseVibe('Bonfire')">BONFIRE</button>
-        <button onclick="chooseVibe('Dinner')">DINNER</button>
-        <button onclick="chooseVibe('Movie')">MOVIE</button>
-      </div>
-    </div>
-
-    <div class="statusbar">
-      <div class="statusbox">Status: choose one...</div>
-      <div class="statusbox" id="pick2"></div>
-    </div>
-  </div>
-
-  <!-- STEP 3 (dynamic) -->
-  <div class="content hidden" id="step3">
-    <div class="panel">
-      <div class="question" id="question3Text"></div>
-      <div class="row" id="question3Options"></div>
-      <div class="hint" id="question3Hint"></div>
-    </div>
-
-    <div class="statusbar">
-      <div class="statusbox">Status: awaiting final selection...</div>
-      <div class="statusbox" id="pick3"></div>
-    </div>
-  </div>
-
-  <!-- FINAL -->
-  <div class="content hidden" id="final">
-    <div class="panel">
-      <div><b>DONE</b></div>
-      <div class="hint" id="finalText">Screenshot this and send it to me 😌</div>
-    </div>
-
-    <div class="panel">
-      <div><b>Summary</b></div>
-      <div class="hint" id="summary"></div>
-    </div>
-
-    <div class="statusbar">
-      <div class="statusbox">Status: complete ✅</div>
-      <div class="statusbox">Love you.</div>
+<!-- STEP 2 -->
+<div class="content hidden" id="step2">
+  <div class="panel">
+    <div class="question">Question 2: Pick our date vibe</div>
+    <div class="row">
+      <button onclick="chooseVibe('Bonfire')">BONFIRE</button>
+      <button onclick="chooseVibe('Dinner')">DINNER</button>
+      <button onclick="chooseVibe('Movie')">MOVIE</button>
     </div>
   </div>
 </div>
 
+<!-- STEP 3 -->
+<div class="content hidden" id="step3">
+  <div class="panel">
+    <div class="question" id="question3Text"></div>
+    <div class="row" id="question3Options"></div>
+  </div>
+</div>
+
+<!-- FINAL -->
+<div class="content hidden" id="final">
+  <div class="panel">
+    <div><b>DONE ✅</b></div>
+    <div class="hint" id="finalText">All set.</div>
+  </div>
+
+  <div class="panel">
+    <img class="gif" src="FINAL_GIF_URL_HERE">
+  </div>
+
+  <div class="panel">
+    <div><b>Summary</b></div>
+    <div class="hint" id="summary"></div>
+  </div>
+</div>
+
+</div>
+
 <script>
-  let noClicks = 0;
-  let selectedVibe = "";
-  let q3Answer = "";
+let noClicks = 0;
+let selectedVibe = "";
+let q3Answer = "";
 
-  // Each NO makes YES bigger (tweak these if you want)
-  const scales = [1.0, 1.25, 1.55, 1.9, 2.35, 2.9];
+const scales = [1.0, 1.3, 1.6, 2.0, 2.6];
 
-  const noMessages = [
-    "Status: awaiting response...",
-    "Status: are you sure? 🙂",
-    "Status: incorrect selection detected.",
-    "Status: please choose YES.",
-    "Status: YES is the only supported option.",
-    "Status: system override imminent..."
-  ];
+function onNo(){
+  noClicks++;
+  const yesBtn = document.getElementById("yesBtn");
+  const idx = Math.min(noClicks, scales.length - 1);
+  yesBtn.style.transform = `scale(${scales[idx]})`;
 
-  function onNo(){
-    noClicks++;
+  document.getElementById("noCountBox").textContent =
+    `NO clicks: ${noClicks}`;
+}
 
-    const yesBtn = document.getElementById("yesBtn");
-    const noCountBox = document.getElementById("noCountBox");
-    const status1 = document.getElementById("status1");
+function onYes(){
+  document.getElementById("step1").classList.add("hidden");
+  document.getElementById("step2").classList.remove("hidden");
+}
 
-    const idx = Math.min(noClicks, scales.length - 1);
-    yesBtn.style.transform = `scale(${scales[idx]})`;
+function chooseVibe(vibe){
+  selectedVibe = vibe;
 
-    noCountBox.textContent = `NO clicks: ${noClicks}`;
-    status1.textContent = noMessages[Math.min(noClicks, noMessages.length - 1)];
+  if(vibe === "Bonfire"){
+    q3Answer = "I love you, see you there :)";
+    goFinal(true);
+    return;
   }
 
-  function onYes(){
-    // Move to Question 2
-    document.getElementById("step1").classList.add("hidden");
-    document.getElementById("step2").classList.remove("hidden");
+  document.getElementById("step2").classList.add("hidden");
+  document.getElementById("step3").classList.remove("hidden");
+  loadQuestion3(vibe);
+}
+
+function loadQuestion3(vibe){
+  const questionText = document.getElementById("question3Text");
+  const optionsDiv  = document.getElementById("question3Options");
+
+  optionsDiv.innerHTML = "";
+
+  if(vibe === "Dinner"){
+    questionText.textContent =
+      "Question 3: Sushi, Steak, or Experience?";
+    addOption("Sushi");
+    addOption("Steak");
+    addOption("Experience");
   }
 
-  function chooseVibe(vibe){
-    selectedVibe = vibe;
-    document.getElementById("pick2").textContent = "Picked: " + vibe;
-
-    // Bonfire: no Q3 choices, go straight to final with message
-    if(vibe === "Bonfire"){
-      q3Answer = "I love you, see you there :)";
-      goFinal(true);
-      return;
-    }
-
-    // Dinner/Movie: go to Q3
-    document.getElementById("step2").classList.add("hidden");
-    document.getElementById("step3").classList.remove("hidden");
-    loadQuestion3(vibe);
+  if(vibe === "Movie"){
+    questionText.textContent =
+      "Question 3: At home or at the theater?";
+    addOption("At home");
+    addOption("At the theater");
   }
+}
 
-  function loadQuestion3(vibe){
-    const questionText = document.getElementById("question3Text");
-    const optionsDiv  = document.getElementById("question3Options");
-    const hint        = document.getElementById("question3Hint");
+function addOption(label){
+  const btn = document.createElement("button");
+  btn.textContent = label;
+  btn.onclick = () => finish(label);
+  document.getElementById("question3Options").appendChild(btn);
+}
 
-    optionsDiv.innerHTML = "";
-    hint.textContent = "";
+function finish(answer){
+  q3Answer = answer;
+  goFinal(false);
+}
 
-    if(vibe === "Dinner"){
-      questionText.textContent = "Question 3: Sushi, Steak, or Experience?";
-      addOption("Sushi");
-      addOption("Steak");
-      addOption("Experience");
-      return;
-    }
+function goFinal(fromBonfire){
+  document.getElementById("step2").classList.add("hidden");
+  document.getElementById("step3").classList.add("hidden");
+  document.getElementById("final").classList.remove("hidden");
 
-    if(vibe === "Movie"){
-      questionText.textContent = "Question 3: At home or at the theater?";
-      addOption("At home");
-      addOption("At the theater");
-      return;
-    }
-  }
+  document.getElementById("finalText").textContent =
+    fromBonfire ? q3Answer : "All set.";
 
-  function addOption(label){
-    const btn = document.createElement("button");
-    btn.textContent = label;
-    btn.onclick = () => finishQ3(label);
-    document.getElementById("question3Options").appendChild(btn);
-  }
-
-  function finishQ3(answer){
-    q3Answer = answer;
-    document.getElementById("pick3").textContent = "Picked: " + answer;
-    goFinal(false);
-  }
-
-  function goFinal(fromBonfire){
-    // Hide step2/step3 safely
-    document.getElementById("step2").classList.add("hidden");
-    document.getElementById("step3").classList.add("hidden");
-
-    document.getElementById("final").classList.remove("hidden");
-
-    // Final text: for Bonfire show the message; otherwise keep the normal line
-    document.getElementById("finalText").textContent = fromBonfire
-      ? q3Answer
-      : "Screenshot this and send it to me 😌";
-
-    document.getElementById("summary").textContent =
-      `Q1: YES | Q2: ${selectedVibe} | Q3: ${q3Answer} | NO clicks before YES: ${noClicks}`;
-  }
+  document.getElementById("summary").textContent =
+    `Q1: YES | Q2: ${selectedVibe} | Q3: ${q3Answer} | NO clicks: ${noClicks}`;
+}
 </script>
 
 </body>
