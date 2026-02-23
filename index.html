@@ -21,7 +21,7 @@ body{
 
 .window{
   width:90%;
-  max-width:900px;
+  max-width:800px;
   border:2px solid #000;
   background:#c0c0c0;
   box-shadow:2px 2px 0 #000;
@@ -64,12 +64,12 @@ body{
 }
 
 .gif{
-  width:100%;
+  width:50%;              /* 👈 Half size */
   height:auto;
   display:block;
+  margin:0 auto 12px auto; /* Center it */
   background:#fff;
   border:1px solid #000;
-  margin-bottom:12px;
 }
 
 .question{
@@ -143,7 +143,7 @@ button:active{
   <div class="panel">
     <img class="gif"
          src="https://media1.tenor.com/m/hvFIBvUYL_4AAAAd/shy-xiaopang-xiaopang-dog.gif">
-    <div class="question">...........Will you be my Valentine?</div>
+    <div class="question">Will you be my Valentine?</div>
     <div class="row">
       <button id="yesBtn" onclick="onYes()">YES</button>
       <button onclick="onNo()">NO</button>
@@ -178,7 +178,9 @@ button:active{
 <!-- FINAL -->
 <div class="content hidden" id="final">
   <div class="panel">
-    <div class="question" id="finalText">All set.</div>
+    <div class="question" id="finalText">
+      Screenshot this and send it to me :)
+    </div>
   </div>
 
   <div class="panel">
@@ -219,7 +221,7 @@ function chooseVibe(vibe){
 
   if(vibe === "Bonfire"){
     q3Answer = "I love you, see you there :)";
-    goFinal(true);
+    goFinal();
     return;
   }
 
@@ -258,16 +260,13 @@ function addOption(label){
 
 function finish(answer){
   q3Answer = answer;
-  goFinal(false);
+  goFinal();
 }
 
-function goFinal(fromBonfire){
+function goFinal(){
   document.getElementById("step2").classList.add("hidden");
   document.getElementById("step3").classList.add("hidden");
   document.getElementById("final").classList.remove("hidden");
-
-  document.getElementById("finalText").textContent =
-    fromBonfire ? q3Answer : "Send me a Screenshot of this Page! See you soon :)";
 
   document.getElementById("summary").textContent =
     `Q1: YES | Q2: ${selectedVibe} | Q3: ${q3Answer} | NO clicks: ${noClicks}`;
